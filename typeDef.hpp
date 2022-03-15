@@ -3,20 +3,24 @@
 
 using namespace std;
 
+//------------------------------------------------------------------------------
+// @library typeDef
+// Cette librairie supporte les typeDef utilisés dans les différentes classes.
+//------------------------------------------------------------------------------
+
 //p = plus
 //m = moins
 //f = fleche
 typedef enum{
-  p,
+  p = 0,
   pp,
   m,
-  mm,
   f,
   ff
 }Symbole;
 
 typedef enum{
-  bleu, 
+  bleu = 0, 
 	vert, 
 	rouge, 
 	jaune, 

@@ -6,6 +6,11 @@
 
 using namespace std;
 
+//------------------------------------------------------------------------------
+// @class Carte
+// 
+//------------------------------------------------------------------------------
+
 class Carte
 {
   private:
@@ -22,11 +27,17 @@ class Carte
     friend std::ostream& operator<< (ostream &, Carte &);
 };
 
+//--------------------------
+//Constructeur
+//--------------------------
 Carte::Carte(Symbole monSymbole, Couleur maCouleur){
   symbole = monSymbole;
 	couleur = maCouleur;
 }
 
+//--------------------------
+//Getteurs et Setteurs
+//--------------------------
 Symbole Carte::getSymbole(){
 	return this->symbole;
 }
@@ -35,6 +46,9 @@ Couleur Carte::getCouleur(){
 	return this->couleur;
 }
 
+//--------------------------
+//Méthodes diverses
+//--------------------------
 string Carte::toString(){
 	string s = "Carte ";
 	switch (this->symbole)  {	//symbole
@@ -45,10 +59,7 @@ string Carte::toString(){
 			s+= "+2 ";
 			break;
 		case m:
-			s+= "+1 ";
-			break;
-		case mm:
-			s+= "-2 ";
+			s+= "-1 ";
 			break;
 		case f:
 			s+= "fleche +1 ";
@@ -59,22 +70,22 @@ string Carte::toString(){
 	}
 	switch (this->couleur)  {	//couleur
     case bleu: 
-			s+= "bleue ";
+			s+= "\033[34mbleue\033[0m ";
 			break;
 		case vert: 
-			s+= "verte ";
+			s+= "\033[32mverte\033[0m ";
 			break;
 		case rouge:
-			s+= "rouge ";
+			s+= "\033[31mrouge\033[0m ";
 			break;
 		case jaune:
-			s+= "jaune ";
+			s+= "\033[33mjaune\033[0m ";
 			break;
 		case violet:
-			s+= "violette ";
+			s+= "\033[35mviolette\033[0m ";
 			break;
 	  case multicolor:
-			s+= "multicolore ";
+			s+= "\033[31mmu\033[32mlt\033[33mic\033[34mol\033[35more\033[0m ";
 			break;
 	}
 	return s;
