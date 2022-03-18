@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 
+#include "typeDef.hpp"
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -19,16 +21,17 @@ class Tortue
   public:
     Tortue(Couleur maCouleur);
 
-		setPosition(int newPos);
+		void setPosition(int newPos);
     int getPosition();
-
-    deplacerTortue(int nbrCases);
-}
+    Couleur getCouleur(void);
+		string toString();
+    void deplacerTortue(int nbrCases);
+};
 
 //--------------------------
 //Constructeur
 //--------------------------
-void Tortue::Tortue(Couleur maCouleur)
+Tortue::Tortue(Couleur maCouleur)
 {
   this->couleur = maCouleur;
 	this->position = 0;
@@ -37,19 +40,56 @@ void Tortue::Tortue(Couleur maCouleur)
 //--------------------------
 //Getteurs et Setteurs
 //--------------------------
-void tortue::setPosition(int newPos){
+void Tortue::setPosition(int newPos){
 	this->position = newPos;
 }
 
-int tortue::getPosition(){
+int Tortue::getPosition(){
 	return (this->position);
+}
+
+Couleur Tortue::getCouleur(void){
+  return this->couleur;
 }
 
 //--------------------------
 //Méthodes diverses
 //--------------------------
 
-void tortue::deplacerTortue(int nbrCases)
+void Tortue::deplacerTortue(int nbrCases)
 {
   
+}
+
+string Tortue::toString(){
+	string s = ""; //"Tortue ";
+	switch(this->getCouleur())  {	//couleur
+    case bleu:
+			s+= "bleue";
+			break;
+		case vert: 
+			s+= "verte";
+			break;
+		case rouge:
+			s+= "rouge";
+			break;
+		case jaune:
+			s+= "jaune";
+			break;
+		case violet:
+			s+= "violette";
+			break;
+	  case multicolor:
+			s+= "multicolor";
+			break;
+    default:
+      s+= "ERREUR";
+      break;
+	}
+	return s;
+}
+
+std::ostream& operator<< (ostream &os, Tortue &t){
+  os << t.toString();
+  return os;
 }

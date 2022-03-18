@@ -12,11 +12,11 @@ using namespace std;
 //m = moins
 //f = fleche
 typedef enum{
-  p = 0,
-  pp,
-  m,
-  f,
-  ff
+  p = 0, //+
+  pp,    //++
+  m,     //-
+  f,     //fleche
+  ff     //double-fleche
 }Symbole;
 
 typedef enum{

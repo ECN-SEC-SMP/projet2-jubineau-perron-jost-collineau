@@ -20,7 +20,7 @@ class Pioche
 
   public:
     Pioche(void);
-    Carte piocher(void);
+    Carte* piocher(void);
 
     string toString();
     friend std::ostream& operator<< (ostream &, Carte &);
@@ -62,14 +62,21 @@ Pioche::Pioche(void){
     new Carte(p, multicolor), new Carte(p, multicolor), new Carte(p, multicolor), new Carte(p, multicolor), new Carte(p, multicolor),
     new Carte(m, multicolor), new Carte(m, multicolor)
   } );
-  cout << "[Pioche] vectCartes size = " << vectCartes.size() << endl;
-  cout << "[Pioche] Init Done!" << endl;
+
+  //Debug
+  //cout << "[Pioche] vectCartes size = " << vectCartes.size() << endl;
+  //cout << "[Pioche] Init Done!" << endl;
 }
 
-Carte Pioche::piocher(void){
-  int num = rand() % (sizeof(vectCartes));
-  cout << "[Pioche] Rand num = " << num << endl;
-  Carte ret = *vectCartes[num];
+Carte* Pioche::piocher(void){
+  if(vectCartes.size() <= 0){
+    cout << "La pioche est vide !" << endl;
+    return NULL;
+  }
+  
+  int num = rand() % (vectCartes.size());
+  Carte* ret = vectCartes[num];
+  //cout << "[Pioche] Carte piochée : " << ret->toString() << " (Rand num=" << num << ")"<< endl;
   
   //enleve la carte de la pioche
   vectCartes.erase(vectCartes.begin()+num);
@@ -84,11 +91,7 @@ Carte Pioche::piocher(void){
 //Affiche l'ensemble de la pioche restante
 string Pioche::toString(void){
   string s;
-  vector<int> compteurCartes; //contient le nombre de carte selon leur symbole
-
-  //Remplie le vecteur de 5 types de carte
-  for(int i = 0 ; i < 5 ; i++)
-    compteurCartes.push_back(0);
+  int compteurCartes[5] = {0, 0, 0, 0, 0}; //contient le nombre de carte selon leur symbole
 
   //Parcour le deck et incremente le compteur
   for(int i = 0 ; i < vectCartes.size() ; i++){
@@ -100,8 +103,8 @@ string Pioche::toString(void){
        << compteurCartes[0] << "cartes +" << endl
        << compteurCartes[1] << "cartes ++" << endl
        << compteurCartes[2] << "cartes -" << endl
-       << compteurCartes[4] << "cartes f" << endl
-       << compteurCartes[5] << "cartes ff" << endl;
+       << compteurCartes[3] << "cartes f" << endl
+       << compteurCartes[4] << "cartes ff" << endl;
   
   return s;
 }

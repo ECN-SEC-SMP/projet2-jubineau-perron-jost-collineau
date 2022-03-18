@@ -53,36 +53,36 @@ string Carte::toString(){
 	string s = "Carte ";
 	switch (this->symbole)  {	//symbole
 		case p :
-			s+= "+1 ";
+			s+= "+  ";
 			break;
 		case pp :
-			s+= "+2 ";
+			s+= "++ ";
 			break;
 		case m:
-			s+= "-1 ";
+			s+= "-  ";
 			break;
 		case f:
-			s+= "fleche +1 ";
+			s+= "f  ";
 			break;
 		case ff:
-			s+= "fleche +2 ";
+			s+= "ff ";
 			break;
 	}
 	switch (this->couleur)  {	//couleur
     case bleu: 
-			s+= "\033[34mbleue\033[0m ";
+			s+= "\033[34mbleue\033[0m       ";
 			break;
 		case vert: 
-			s+= "\033[32mverte\033[0m ";
+			s+= "\033[32mverte\033[0m       ";
 			break;
 		case rouge:
-			s+= "\033[31mrouge\033[0m ";
+			s+= "\033[31mrouge\033[0m       ";
 			break;
 		case jaune:
-			s+= "\033[33mjaune\033[0m ";
+			s+= "\033[33mjaune\033[0m       ";
 			break;
 		case violet:
-			s+= "\033[35mviolette\033[0m ";
+			s+= "\033[35mviolette\033[0m    ";
 			break;
 	  case multicolor:
 			s+= "\033[31mmu\033[32mlt\033[33mic\033[34mol\033[35more\033[0m ";
