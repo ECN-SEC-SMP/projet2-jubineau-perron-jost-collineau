@@ -32,17 +32,21 @@ class Joueur
     Joueur(string name, Couleur couleur_tortue, bool IA);
 
     void afficher_info_joueur();
-    string couleur_to_string();
+
 		void jouerCarte(int nbr);
+    void piocher_1_carte(Pioche pile_de_cartes);
 		void piocher_5_cartes(Pioche pile_de_cartes);
 		void defausserCarte(int nbr);
-    Carte *choisirCarte();
+    int choisirCarte();
 
     void setCouleur(Couleur couleur_tortue);
+
     Couleur getCouleur(void);
 		Carte *getCard(int nbr);
 		Couleur getCardCouleur(int nbr);
 		Symbole getCardSymbole(int nbr);
+
+    string couleur_to_string();
 };
 
 //--------------------------
@@ -58,7 +62,7 @@ Joueur::Joueur(string name, Couleur couleur_tortue, bool IA)
   this->nom = name;   //on set le nom du joueur avec celui donné en paramètre
   this->couleur = couleur_tortue;
 
-  this->is_AI = IA;
+  this->is_IA = IA;
 }
 
 //--------------------------
@@ -91,15 +95,15 @@ Symbole Joueur::getCardSymbole(int nbr){
 //Méthodes diverses
 //--------------------------
 
-Carte *Joueur::choisirCarte(){
-  if(this->is_AI == true)
+int Joueur::choisirCarte(){
+  int carteChoisie;
+  if(this->is_IA == true)
   {
     cout << "L'IA choisie une carte :"	<< endl;
-    int carteChoisie = rand()%5;
+    carteChoisie = rand()%5;
     cout << carteChoisie << endl;
   }
   else {
-  	int carteChoisie;
     cout << "Quelle carte jouer ?"	<< endl;
   	while (true){
     	cin >> carteChoisie;
@@ -114,17 +118,21 @@ Carte *Joueur::choisirCarte(){
     	else break;
     }
   }
+  return carteChoisie;
 }
 
 //permet de jouer une carte et la supprime de la main du joueur
 void Joueur::defausserCarte(int nbr)
-{
-  if (nbr > cartes_en_main.size() || cartes_en_main.size ()> nbr ) return;
+{  
+  if ((nbr > 4) || (0 > nbr)) return;
 	else {
-		cartes_en_main.erase(cartes_en_main.begin()+(nbr-1));
+		cartes_en_main.erase(cartes_en_main.begin()+(nbr));
 	}
 }
 
+void Joueur::piocher_1_carte(Pioche pile_de_cartes){
+  cartes_en_main.push_back(pile_de_cartes.piocher());
+}
 
 // Permet au joueur en début de partie de piocher 5 cartes 
 void Joueur::piocher_5_cartes(Pioche pile_de_cartes)
@@ -141,19 +149,19 @@ string Joueur::couleur_to_string(){
   
 	switch (this->couleur)  {	//couleur
     case bleu: 
-			string_couleur = "rouge";
+			string_couleur = "bleu";
 			break;
 		case vert: 
-			string_couleur = "jaune";
+			string_couleur = "vert";
 			break;
 		case rouge:
-			string_couleur = "bleue";
+			string_couleur = "rouge";
 			break;
 		case jaune:
-			string_couleur = "verte";
+			string_couleur = "jaune";
 			break;
 		case violet:
-			string_couleur = "violette";
+			string_couleur = "violet";
 			break;
     case multicolor:
       string_couleur = "multicolor";
@@ -166,11 +174,12 @@ string Joueur::couleur_to_string(){
 void Joueur::afficher_info_joueur()
 {
   cout << " --- INFO JOUEUR --- " << endl;
-  cout << "Nom = " << nom << endl;
-  if(this->is_AI == true)
-  {
-    cout << "Artificial Intelligence" << endl;
-  }
+  
+  cout << "Nom = " << this->nom;
+  if(this->is_IA == true)
+    cout << " - IA";
+  cout << endl;
+  
   cout << "Tortue = " << couleur_to_string() << endl;
   cout << " Cartes en main :" << endl;
   for(int i=0 ; i < cartes_en_main.size() ; i++){

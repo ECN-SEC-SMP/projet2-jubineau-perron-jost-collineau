@@ -25,7 +25,6 @@ class Tortue
     int getPosition();
     Couleur getCouleur(void);
 		string toString();
-    void deplacerTortue(int nbrCases);
 };
 
 //--------------------------
@@ -55,11 +54,6 @@ Couleur Tortue::getCouleur(void){
 //--------------------------
 //Méthodes diverses
 //--------------------------
-
-void Tortue::deplacerTortue(int nbrCases)
-{
-  
-}
 
 string Tortue::toString(){
 	string s = ""; //"Tortue ";

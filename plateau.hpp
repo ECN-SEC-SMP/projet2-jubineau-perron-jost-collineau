@@ -33,13 +33,14 @@ class Plateau
 
 	public :
 	  Plateau(int nbJoueurs = 5);
+
 		void ajouterJoueur(Joueur * monJoueur); 
 		void Jeu();
 		void deplacerTortue(Carte maCarte);
     Tortue* getTortue(Couleur c);
+
     string toString();
     friend std::ostream& operator<< (ostream &, Plateau &c);
-    
 };
 
 //--------------------------
@@ -74,7 +75,7 @@ void Plateau::Jeu(){
 
   while(!victoire){
     int i = 0;	
-    while( ((++i)<joueurs.size()) && (!victoire) ){
+    while( ((i)<joueurs.size()) && (!victoire) ){
       cout << endl << endl << endl; //espaces pour la lisibilitee
       //cout << "\u001b[1J"; //ou clear screen (choisir entre les deux)
       cout << *this << endl; //Afficher le plateau
@@ -85,6 +86,8 @@ void Plateau::Jeu(){
   		couleurCartechoisie = joueurs[i]->getCardCouleur(carteChoisie);
   		this->deplacerTortue(*(joueurs[i]->getCard(carteChoisie)));
   		joueurs[i]->defausserCarte(carteChoisie);
+      joueurs[i]->piocher_1_carte(pioche);
+      i++;
   	}
   }
 }
@@ -97,13 +100,13 @@ void Plateau::deplacerTortue(Carte maCarte){
 	Tortue* current;
 
   //si multicolor et pas f ou ff
-	//acquisition tortue a jouer
+	//acquisition de la couleur a jouer
 	if ( (coul == multicolor) && !((symb == f) || (symb == ff)) ){
 		char tortueChoisie;
 		cout << "Quelle tortue jouer ? " << endl;
 		cout << "Bleue (B), Verte (G) , Rouge (R),Jaune (J), Violet (P)" << endl;
 		while (true){
-			cin >>  tortueChoisie;;
+			cin >>  tortueChoisie;
 			string testStr = "BGRJP";
 			if (cin.fail()) {
 	      cin.clear(); cin.ignore();
@@ -118,19 +121,19 @@ void Plateau::deplacerTortue(Carte maCarte){
 		}
 		switch (tortueChoisie) {
 	    case 'B': 
-	        current = getTortue(bleu);
-	        break;
-			case 'V': 
-	      current = getTortue(vert);
+        coul = bleu;
+        break;
+			case 'G': 
+	      coul = vert;
 	      break;
 			case 'R': 
-	      current = getTortue(rouge);
+	      coul = rouge;
 	      break;
 			case 'J': 
-	      current = getTortue(jaune);
+	      coul = jaune;
 				break;
 			case 'P': 
-	      current = getTortue(violet);
+	      coul = violet;
 	      break;
 		}
 	} else if( (symb == f) || (symb == ff) ){
@@ -140,15 +143,14 @@ void Plateau::deplacerTortue(Carte maCarte){
     int i = 0;
     while(!done){
       if(cases[i].getListeTortues().size() != 0){
-        cout << "Tortue " << *(cases[i].getListeTortues()[0]) << "sélectionnée" << endl;
+        cout << "Tortue " << *(cases[i].getListeTortues()[0]) << " sélectionnée" << endl;
         coul = cases[i].getListeTortues()[0]->getCouleur();
         done = true;
       }
       i++;
     }
-	} else {
-		current = getTortue(coul);
-  }
+	}
+  current = getTortue(coul);
 
 //Acquisition de la pos de la tortue
 	int pos = current->getPosition();
@@ -183,6 +185,7 @@ void Plateau::deplacerTortue(Carte maCarte){
 	//Check gagnant - A COMPLETER SI PLUSIEURS TORTUES
 	if ( (pos + deplacement) >= 10) {
 		cout << "ON A UN GAGNANT !"	<< endl;
+    cout << "Felicitation ! Il vient de remporter une PIZZA" << endl;
     //On arrete la boucle de jeu
     this->victoire = true; 
 	}	
@@ -191,8 +194,11 @@ void Plateau::deplacerTortue(Carte maCarte){
   //ajouter les tortues dans la nvlle case
   //et les supprimer de l'ancienne
   if(deplacement != 0){
+    cout << "...deplacement..." << endl;
     cases[pos+deplacement].addTortues(cases[pos].getListeTortuesFrom(current));
   	cases[pos].removeTortues(cases[pos].getListeTortuesFrom(current));
+  }else{
+    cout << "...rien a faire..." << endl;
   }
 }
 
