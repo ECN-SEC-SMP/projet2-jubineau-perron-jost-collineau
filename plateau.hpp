@@ -38,6 +38,7 @@ class Plateau
 		void Jeu();
 		void deplacerTortue(Carte maCarte);
     Tortue* getTortue(Couleur c);
+    Joueur* getJoueur(Couleur c);
 
     string toString();
     friend std::ostream& operator<< (ostream &, Plateau &c);
@@ -98,6 +99,15 @@ void Plateau::Jeu(){
       i++;
   	}
   }
+  //Trouver la tortue gagnantes
+  Couleur coulGagnant = cases[9].getListeTortues()[0]->getCouleur();
+  cout << coulGagnant << endl;
+
+  //Affichage fin de partie
+  cout << endl << endl << endl; //espaces pour la lisibilitee
+  cout << *this << "-----------------------" << endl; //Afficher le plateau
+  cout << *getJoueur(coulGagnant) << " gagne la partie !" << endl;
+  cout << "Felicitation ! Il vient de remporter une PIZZA" << endl;
 }
 
 void Plateau::deplacerTortue(Carte maCarte){
@@ -155,12 +165,11 @@ void Plateau::deplacerTortue(Carte maCarte){
     deplacement = 0;
   }
   
-	//Check gagnant - A COMPLETER SI PLUSIEURS TORTUES
-	if ( (pos + deplacement) >= 10) {
-		cout << "ON A UN GAGNANT !"	<< endl;
-    cout << "Felicitation ! Il vient de remporter une PIZZA" << endl;
+	//Check gagnant
+	if ( (pos + deplacement) == 9) {
     //On arrete la boucle de jeu
     this->victoire = true; 
+    cout << "ON A UN GAGNANT !"	<< endl;
 	}	
 
   //si déplacement à faire,
@@ -198,6 +207,27 @@ Tortue* Plateau::getTortue(Couleur c){
     default:
       break;
 	}
+  return ret;
+}
+
+Joueur* Plateau::getJoueur(Couleur c){
+  Joueur* ret = NULL;
+  
+  bool done=false;
+  int i=0;
+  while( !done && (i<5) ){
+    if(joueurs[i]->getCouleur() == c){
+      ret = joueurs[i];
+      done = true;
+    }
+    i++;
+  }
+
+  //Detection si erreur (pas censé arriver theoriquement)
+  if(ret == NULL){
+    cout << "ERREUR GETJOUEUR!!!" << endl;
+  }
+  
   return ret;
 }
 

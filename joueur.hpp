@@ -48,6 +48,7 @@ class Joueur
 		Symbole getCardSymbole(int nbr);
 
     string couleur_to_string();
+    friend ostream& operator<< (ostream &, Joueur &j);
 };
 
 //--------------------------
@@ -236,3 +237,7 @@ void Joueur::afficher_info_joueur()
   cout << " ---             --- " << endl;
 }
 
+std::ostream& operator<< (ostream &os, Joueur &j){
+  os << j.nom;
+  return os;
+}

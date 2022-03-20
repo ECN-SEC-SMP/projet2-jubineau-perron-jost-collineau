@@ -44,7 +44,7 @@ int main() {
 
   //lancement d'une partie
 	monPlateau.Jeu();
-	
+
   //==========================
   //JEUX DE TESTS
   //==========================
