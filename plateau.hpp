@@ -68,25 +68,33 @@ void Plateau::ajouterJoueur(Joueur * monJoueur){
 } 
 
 void Plateau::Jeu(){
-	int carteChoisie = -1; 
+	int carteChoisie = -1;
 	Symbole symboleCarteChoisie;
-	Couleur couleurCartechoisie;
+	Couleur couleurCarteChoisie;
   vector<Tortue> tortuesADeplacees;
 
   while(!victoire){
     int i = 0;	
     while( ((i)<joueurs.size()) && (!victoire) ){
       cout << endl << endl << endl; //espaces pour la lisibilitee
-      //cout << "\u001b[1J"; //ou clear screen (choisir entre les deux)
       cout << *this << endl; //Afficher le plateau
   		joueurs[i]->afficher_info_joueur();
       
   		carteChoisie = joueurs[i]->choisirCarte();
   		symboleCarteChoisie = joueurs[i]->getCardSymbole(carteChoisie);
-  		couleurCartechoisie = joueurs[i]->getCardCouleur(carteChoisie);
-  		this->deplacerTortue(*(joueurs[i]->getCard(carteChoisie)));
+  		couleurCarteChoisie = joueurs[i]->getCardCouleur(carteChoisie);
+
+      //si multicolor et pas f ou ff
+	    //acquisition de la couleur a jouer
+      if( ((couleurCarteChoisie == multicolor) &&
+        !((symboleCarteChoisie == f) || (symboleCarteChoisie == ff))) ){
+        couleurCarteChoisie = joueurs[i]->choisirCouleur();
+      }
+      
+  		this->deplacerTortue(Carte(symboleCarteChoisie, couleurCarteChoisie));
   		joueurs[i]->defausserCarte(carteChoisie);
       joueurs[i]->piocher_1_carte(pioche);
+      
       i++;
   	}
   }
@@ -99,46 +107,11 @@ void Plateau::deplacerTortue(Carte maCarte){
 	Symbole symb = maCarte.getSymbole();
 	Tortue* current;
 
-  //si multicolor et pas f ou ff
-	//acquisition de la couleur a jouer
-	if ( (coul == multicolor) && !((symb == f) || (symb == ff)) ){
-		char tortueChoisie;
-		cout << "Quelle tortue jouer ? " << endl;
-		cout << "Bleue (B), Verte (G) , Rouge (R),Jaune (J), Violet (P)" << endl;
-		while (true){
-			cin >>  tortueChoisie;
-			string testStr = "BGRJP";
-			if (cin.fail()) {
-	      cin.clear(); cin.ignore();
-	      cout << "Entree invalide, reesayer :" << endl;
-	    } 
-			else if ( testStr.find(tortueChoisie) != std::string::npos) {
-				break;
-			} 
-			else 
-				cin.clear(); cin.ignore();
-				cout << "Entree invalide, reesayer :"<< endl;
-		}
-		switch (tortueChoisie) {
-	    case 'B': 
-        coul = bleu;
-        break;
-			case 'G': 
-	      coul = vert;
-	      break;
-			case 'R': 
-	      coul = rouge;
-	      break;
-			case 'J': 
-	      coul = jaune;
-				break;
-			case 'P': 
-	      coul = violet;
-	      break;
-		}
-	} else if( (symb == f) || (symb == ff) ){
-    //trouver la dernière tortue dans le plateau
-    //et prendre sa couleur
+  //Si symbole est une flêche
+  //trouver la dernière tortue dans le plateau
+  //et prendre sa couleur
+	if( (symb == f) || (symb == ff) ){
+
     bool done = false;
     int i = 0;
     while(!done){

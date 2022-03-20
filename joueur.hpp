@@ -38,6 +38,7 @@ class Joueur
 		void piocher_5_cartes(Pioche pile_de_cartes);
 		void defausserCarte(int nbr);
     int choisirCarte();
+    Couleur choisirCouleur();
 
     void setCouleur(Couleur couleur_tortue);
 
@@ -119,6 +120,53 @@ int Joueur::choisirCarte(){
     }
   }
   return carteChoisie;
+}
+
+//Choisir une couleur parmis les 5
+Couleur Joueur::choisirCouleur(void){
+  Couleur coul;
+  if(is_IA){
+    cout << "L'IA choisie une couleur :"	<< endl;
+    coul = static_cast<Couleur>(rand() % 5);
+    cout << coul << endl;
+  } 
+  else{
+    char tortueChoisie;
+		cout << "Quelle tortue jouer ? " << endl;
+		cout << "Bleue (B), Verte (G) , Rouge (R),Jaune (J), Violet (P)" << endl;
+		while (true){
+			cin >>  tortueChoisie;
+			string testStr = "BGRJP";
+			if (cin.fail()) {
+	      cin.clear(); cin.ignore();
+	      cout << "Entree invalide, reesayer :" << endl;
+	    } 
+			else if ( testStr.find(tortueChoisie) != std::string::npos) {
+				break;
+			} 
+			else 
+				cin.clear(); cin.ignore();
+				cout << "Entree invalide, reesayer :"<< endl;
+		}
+		switch (tortueChoisie) {
+	    case 'B': 
+        coul = bleu;
+        break;
+			case 'G': 
+	      coul = vert;
+	      break;
+			case 'R': 
+	      coul = rouge;
+	      break;
+			case 'J': 
+	      coul = jaune;
+				break;
+			case 'P': 
+	      coul = violet;
+	      break;
+		}
+  }
+  return coul;
 }
 
 //permet de jouer une carte et la supprime de la main du joueur

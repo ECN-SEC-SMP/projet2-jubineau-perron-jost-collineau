@@ -22,6 +22,7 @@ int main() {
 	//==========================
   //PARTIE NORMALE
   //==========================
+  
 	Pioche pile_de_cartes;
 	Joueur joueur1 ("Raphael", rouge, true);
 	Joueur joueur2 ("Donatello", violet, true);
